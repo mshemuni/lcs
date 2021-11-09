@@ -1,0 +1,2 @@
+# lcs
+Light Curve Simulator
