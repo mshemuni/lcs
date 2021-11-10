@@ -5,6 +5,30 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 
+# https://stackoverflow.com/a/34325723/2681662
+# Print iterations progress
+def printProgressBar(iteration, total, prefix='', suffix='', decimals=1, length=100, fill='█', printEnd="\r"):
+    """
+    Call in a loop to create terminal progress bar
+    @params:
+        iteration   - Required  : current iteration (Int)
+        total       - Required  : total iterations (Int)
+        prefix      - Optional  : prefix string (Str)
+        suffix      - Optional  : suffix string (Str)
+        decimals    - Optional  : positive number of decimals in percent complete (Int)
+        length      - Optional  : character length of bar (Int)
+        fill        - Optional  : bar fill character (Str)
+        printEnd    - Optional  : end character (e.g. "\r", "\r\n") (Str)
+    """
+    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
+    filledLength = int(length * iteration // total)
+    bar = fill * filledLength + '-' * (length - filledLength)
+    print(f'\r{prefix} |{bar}| {percent}% {suffix}', end=printEnd)
+    # Print New Line on Complete
+    if iteration == total:
+        print()
+
+
 class Binary:
     def __init__(self, bodyA, bodyB) -> None:
         """
@@ -102,7 +126,7 @@ class Binary:
         else:
             plt.show()
 
-    def simulate(self, to: Point, angle: float, step: int, save_to: bool =None) -> np.ndarray:
+    def simulate(self, to: Point, angle: float, step: int, save_to: bool = None) -> np.ndarray:
         """
         A simulation
 
@@ -122,8 +146,10 @@ class Binary:
 
         ret = []
 
+        printProgressBar(0, len(xs), prefix='Progress:', suffix='Complete', length=50)
+
         for it, (x, y, ang) in enumerate(zip(xs, ys, angs)):
-            print(f"{100 * (it + 1) / step}% Done")
+            # print(f"{100 * (it + 1) / step}% Done")
             self.bodyB.move(Point(x, y), relative=False)
             self.bodyB.rotate(ang, relative=False)
 
@@ -146,5 +172,6 @@ class Binary:
                 ax2.plot(to_plot[:, 0], to_plot[:, 1])
 
                 plt.savefig(f"{save_to}/{str(it).zfill(8)}.png")
+            printProgressBar(it + 1, len(xs), prefix='Progress:', suffix='Complete', length=50)
 
         return np.array(ret)
