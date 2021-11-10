@@ -108,7 +108,7 @@ class Binary:
 
         return b_mag + a_mag
 
-    def show(self, save_to: bool = None) -> None:
+    def show(self, save_to: str = None) -> None:
         """
         Shows the current status of the system
         """
@@ -126,7 +126,7 @@ class Binary:
         else:
             plt.show()
 
-    def simulate(self, to: Point, angle: float, step: int, save_to: bool = None) -> np.ndarray:
+    def simulate(self, to: Point, angle: float, step: int, save_to: str = None) -> np.ndarray:
         """
         A simulation
 
